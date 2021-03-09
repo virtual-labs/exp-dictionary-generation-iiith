@@ -1,3 +1,24 @@
+<!--
+This experiment aims at dictionary generation.
+ - It works in for two languages, English and Hindi, but any number of languages can be added by supplying the corpus of that language in the folder "exp7-corpus.
+ - We have taken 10 words from each language for now. More words can be added by adding a file with name as same as the word and having meanings of different senses in it. Refer to exp7-corpus/english/words/book for the word "book".
+ 
+Implementation:
+ - This page is the Experiment page of Experiment 7. It makes calls to following pages:
+   - getWords.php: It returns all the words (filenames) present in the directory of that langugage.
+   - generate_dict.php: It returns all the POS and Meaning of the selected word.
+   - loadAssign.php: This file loads the assignment for the particular word.
+   - check.php: It checks whether a particular dictionary entry is correct or not. 
+   - eval.php: This code evaluates each submission of assignment.
+-->
+
+
+<html>
+<head>
+<script class='gtm'>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-W59SWTR');</script>
+
+<script type="text/javascript" src='jquery.js'></script>
+<script>
 
 var language;
 var words;
@@ -103,3 +124,21 @@ function eval(i){
 	}
 	xmlhttp.open("GET","Exp7/eval.php?lang="+language+"&word="+words+"&ans="+myans+"&i="+i,true);
 	xmlhttp.send();
+}
+</script>
+</head>
+<body onload="lang.reset();">
+<p align="center"><span style="color:blue;font-weight:bold;font-size:14px" id="textlang"> Select Dictionary Language: &nbsp</span>
+<select name="lang" id="lang" autocomplete="off" onchange="getOption(this.value);">
+<option value="null">---Select Language---</option>
+<option value="english">English</option>
+<option value="hindi">Hindi</option>
+</select>
+<br><br>
+</p>
+<div id="word" align="center"></div>
+<div id="dict" align="center"></div>
+<div id="assign" align="center">
+</div>
+</body>
+</html>
