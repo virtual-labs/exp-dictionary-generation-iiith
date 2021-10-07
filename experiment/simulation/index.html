@@ -16,95 +16,7 @@
 
   <script src="js/jquery-1.7.1.min.js"></script>
  <link href="css/override.css" rel="stylesheet"/>
-<script type="text/javascript">
-         $(document).ready(function() 
-         {		
-           //the function is called once the document loads     
-         
-           $('#hidden-content').load('default.html #experiment', 
-                   function(response,status,xhr)
-           {
-             //loads the default.html #lab section into the
-             //#hidden-content
-         
-             $('#container').load('content.html #experiment', 
-                   function(response,status,xhr)
-             {
-               //loads the content.html #lab section into the
-         //#container
-         
-               homePage=$("div#experiment-header-heading a").html();
-               
-         thisPage=$("article#experiment-article header#experiment-article-heading").html();
-             
-         breadcrumb="<font color='white'>"+ "<a href='../../index.html'>Home<a/> \> <a href='../index.html'>" + homePage + "</a> \> <a href='index.html'>" + thisPage + "</a>"+ "</font>";
-             
-         $("article#experiment-article div#experiment-article-breadcrumb").html(breadcrumb);
-         
-         $("#container .default").each(function() 
-         {
-                 // Extracts all elements with class = "default"
-                 // and top down
-                 
-          sectionId = $(this).attr('id');
-                 sectionContent = $("#hidden-content #" + 
-                       sectionId).html();
-                 $("#container #" + sectionId).html(sectionContent);
-         });
-         
-         $("#container #experiment-article-sections > section").each(function() 
-         {
-          // loads all the content in the respective
-          // sections with the corresponding section headings 
-         
-                 sectionId = $(this).attr('id');
-          headerId = $("#" + sectionId + "-heading").html();
-          iconId = $("#" + sectionId + "-icon").html();
-         
-          $("#container #experiment-article-navigation ul").
-            append("<li> <a href=\'#\' id=\'"+ sectionId + 
-                   "-menu\'>" + iconId +"<br />" +
-                   headerId + "</a></li>");
-         });
-         
-         /*			
-               $("#experiment-article-sections").after(
-                 "<div id='experiment-article-sections-view'> </div>");
-         $("#experiment-article-sections-view").html($(
-                 "#experiment-article-sections section:first").html()); */
-         
-         $("#experiment-article-sections section").hide();
-         //hide all the experiment sections
-         
-         $("#experiment-article-sections section:first").show();
-         //show only the first experiment section when
-         //the experiment page loads
-         
-         $("#experiment-article-navigation ul > li a").live('click',
-                 function()            
-               {	
-                 //enables the navigation
-         
-                 menuId = $(this).attr('id'); 
-                 // this points to the current element
-          
-          sectionId = menuId.replace(/-menu/i, "");
-          /*
-          $("#experiment-article-sections-view").html($(
-                 "#experiment-article-sections #" + 
-                 sectionId).html());
-          */
-                 
-          $("#experiment-article-sections section").hide();
-          $("#experiment-article-sections #" + sectionId).show();
-          $("#experiment-article-sections #" + sectionId + " #DICTIONARY_GENERATION").load("CLExperiment7.php");
-             });
-           });		
-         });
-         
-         });
-         
-      </script>
+
        
       <script>
          var language;
@@ -216,25 +128,18 @@
       
    </head>
    <body >
-      
-               <div class="content" id="experiment-article-section-4-content">
-                  <div id="DICTIONARY_GENERATION">
-                  <p align="center">
-                     <span id="textlang" style="color:blue;font-weight:bold;font-size:14px"> Select Dictionary Language:  </span>
-                     <select autocomplete="off" id="lang" name="lang" onchange="getOption(this.value);">
-                        <option value="null">---Select Language---</option>
-                        <option value="english">English</option>
-                        <option value="hindi">Hindi</option>
-                     </select>
-                     <br/><br/>
-                  </p>
-                   <div align="center" id="word"   ></div>
-                  <div align="center" id="dict"   ></div>
-                  <div align="center" id="assign"></div> 
-
-
-               </div></div>
-            
+      <p align="center"><span style="color:blue;font-weight:bold;font-size:14px" id="textlang"> Select Dictionary Language: &nbsp</span>
+<select name="lang" id="lang" autocomplete="off" onchange="getOption(this.value);">
+<option value="null">---Select Language---</option>
+<option value="english">English</option>
+<option value="hindi">Hindi</option>
+</select>
+<br><br>
+</p>
+<div id="word" align="center"></div>
+<div id="dict" align="center"></div>
+<div id="assign" align="center">
+</div>
 
 
 
