@@ -1,240 +1,162 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<!-- Add CSS at the head of HTML file -->
-	    <meta charset="utf-8">
-	<link rel="stylesheet" href="./css/main.css">
-<script>
-
-var language;
-var words;
-var id=0;
-var xmlhttp;
-var mapping=new Array();
-
-if (window.XMLHttpRequest)
-{// code for IE7+, Firefox, Chrome, Opera, Safari
-	xmlhttp=new XMLHttpRequest();
-}
-else
-{// code for IE6, IE5
-	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-}
-function getOption(lang)
-{
-	language=lang;
-	document.getElementById("textlang").innerHTML="";
-	xmlhttp.onreadystatechange=function()
-	{
-		if (xmlhttp.readyState==4 && xmlhttp.status==200)
-		{
-			document.getElementById("word").innerHTML=xmlhttp.responseText;
-		}
-	}
-	xmlhttp.open("GET","Exp7/getWords.php?lang="+lang,true);
-	xmlhttp.send();
-}
-
-function builtDictionary(word)
-{
-	document.getElementById("textword").innerHTML="";
-	words=word;
-	id=id+1;
-	$.ajax({
-		url: "Exp7/generate_dict.php",	
-		type: "POST",		
-		data: "lang="+language+"&word="+word+"&id="+id+"&map="+mapping,	
-		success: function (html) {	
-			$('#dict').html(html);	
-		}		
-	});
-
-	document.getElementById("lang").disabled=true;
-}
-
-function check(word)
-{
-	//check
-	document.getElementById("dropword").disabled=true;
-	var pos=document.getElementById("pos_"+id).value;
-	var elt=document.getElementById("mean_"+id);
-	var mean="";
-	if (elt.selectedIndex != -1){
-		mean=elt.options[elt.selectedIndex].text;
-	}
-	$.ajax({
-		url: "Exp7/check.php",	
-		type: "POST",		
-		data: "lang="+language+"&word="+word+"&map="+mapping+"&pos="+pos+"&mean="+mean,	
-		success: function (html) {	
-			if(html>=0){
-				mapping[id-1]=html;
-				builtDictionary(word);
-			}
-			else if(html==-1){
-				alert("POS and Meaning do not match");
-			}
-			else if(html==-2){
-				alert("Dictionary Entry repeated");
-			}
-		}		
-	});
-}
-function loadAssign()
-{
-	xmlhttp.onreadystatechange=function()
-	{
-		if (xmlhttp.readyState==4 && xmlhttp.status==200)
-		{
-			document.getElementById("assign").innerHTML=xmlhttp.responseText;
-		}
-	}
-	xmlhttp.open("GET","Exp7/loadAssign.php?lang="+language+"&word="+words,true);
-	xmlhttp.send();
-}
-function eval(i){
-
-	var ans=document.getElementById("text_"+i).value;
-	var myans=mapping[ans-1];
-	xmlhttp.onreadystatechange=function()
-	{
-		if (xmlhttp.readyState==4 && xmlhttp.status==200)
-		{
-			if(xmlhttp.responseText==1){
-				document.getElementById("ans_"+i).innerHTML='<img src="images/right.png" style="height:25px;width:25px">';
-			}
-			else{
-				document.getElementById("ans_"+i).innerHTML='<img src="images/wrong.png" style="height:25px;width:25px">';
-			}
-		}
-	}
-	xmlhttp.open("GET","Exp7/eval.php?lang="+language+"&word="+words+"&ans="+myans+"&i="+i,true);
-	xmlhttp.send();
-}
-</script>
-
-
-<script type="text/javascript">
-    $(document).ready(function() 
-    {		
-      //the function is called once the document loads     
-
-      $('#hidden-content').load('default.html #experiment', 
-              function(response,status,xhr)
-      {
-        //loads the default.html #lab section into the
-        //#hidden-content
-		
-        $('#container').load('content.html #experiment', 
-              function(response,status,xhr)
-        {
-          //loads the content.html #lab section into the
-	  //#container
-
-          homePage=$("div#experiment-header-heading a").html();
-          
-	  thisPage=$("article#experiment-article header#experiment-article-heading").html();
-        
-	  breadcrumb="<font color='white'>"+ "<a href='../../index.html'>Home<a/> \> <a href='../index.html'>" + homePage + "</a> \> <a href='index.html'>" + thisPage + "</a>"+ "</font>";
-        
-	  $("article#experiment-article div#experiment-article-breadcrumb").html(breadcrumb);
-				
-	  $("#container .default").each(function() 
-	  {
-            // Extracts all elements with class = "default"
-            // and top down
-            
-	    sectionId = $(this).attr('id');
-            sectionContent = $("#hidden-content #" + 
-                  sectionId).html();
-            $("#container #" + sectionId).html(sectionContent);
-	  });
-			
-	  $("#container #experiment-article-sections > section").each(function() 
-	  {
-	    // loads all the content in the respective
-	    // sections with the corresponding section headings 
-
-            sectionId = $(this).attr('id');
-	    headerId = $("#" + sectionId + "-heading").html();
-	    iconId = $("#" + sectionId + "-icon").html();
-
-	    $("#container #experiment-article-navigation ul").
-	      append("<li> <a href=\'#\' id=\'"+ sectionId + 
-              "-menu\'>" + iconId +"<br />" +
-              headerId + "</a></li>");
-	  });
-	
-	  /*			
-          $("#experiment-article-sections").after(
-            "<div id='experiment-article-sections-view'> </div>");
-	  $("#experiment-article-sections-view").html($(
-            "#experiment-article-sections section:first").html()); */
-    
-	  $("#experiment-article-sections section").hide();
-	  //hide all the experiment sections
-
-	  $("#experiment-article-sections section:first").show();
-	  //show only the first experiment section when
-	  //the experiment page loads
-	  
-	  $("#experiment-article-navigation ul > li a").live('click',
-            function()            
-          {	
-            //enables the navigation
-
-            menuId = $(this).attr('id'); 
-            // this points to the current element
-	    
-	    sectionId = menuId.replace(/-menu/i, "");
-	    /*
-	    $("#experiment-article-sections-view").html($(
-            "#experiment-article-sections #" + 
-            sectionId).html());
-	    */
-            
-	    $("#experiment-article-sections section").hide();
-	    $("#experiment-article-sections #" + sectionId).show();
-	    $("#experiment-article-sections #" + sectionId + " #DICTIONARY_GENERATION").load("CLExperiment7.php");
-        });
-      });		
-    });
-
-  });
-
+<html lang="en">
+   <head>
+      <meta charset="utf-8"/>
+      <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+      <link href="css/bootstrap.min.css" rel="stylesheet"/>
+      <!-- Important Owl stylesheet -->
+      <!--	<link href="../../vendors/owl-carousel/owl.carousel.css" rel="stylesheet"/>
+         <link href="../../vendors/owl-carousel/owl.theme.css" rel="stylesheet"/>-->
+      <link href="vendors/font-awesome/css/font-awesome.css" rel="stylesheet"/>
+      <!-- Custom CSS -->
+      <link href="css/style.css" rel="stylesheet"/>
+      <!--<script src="tabs.js" type="text/javascript"></script>-->
+	<script src="js/modernizr-1.5.min.js" type="text/javascript">
   </script>
 
-</head>
-<body>
-  <!-- Your code goes here-->
+  <script src="js/jquery-1.7.1.min.js"></script>
+ <link href="css/override.css" rel="stylesheet"/>
 
-    <!--  <p>Click <a href="exp5/index.html">here</a> to perform the simulation</p>-->
-<div class="content" id="experiment-article-section-4-content">
-<div id="DICTIONARY_GENERATION"></div>
-	<p align="center"><span id="textlang" style="color:blue;font-weight:bold;font-size:14px"> Select Dictionary Language:  </span>
-	<select autocomplete="off" id="lang" name="lang" onchange="getOption(this.value);">
-		<option value="null">---Select Language---</option>
-		<option value="english">English</option>
-		<option value="hindi">Hindi</option>
-	</select>
-<br/><br/>
-	</p>
-<div align="center" id="word"></div>
-<div align="center" id="dict"></div>
-<div align="center" id="assign"></div>
-</div>					
+       
+      <script>
+         var language;
+         var words;
+         var id=0;
+         var xmlhttp;
+         var mapping=new Array();
+         
+         if (window.XMLHttpRequest)
+         {// code for IE7+, Firefox, Chrome, Opera, Safari
+         	xmlhttp=new XMLHttpRequest();
+         }
+         else
+         {// code for IE6, IE5
+         	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+         }
+         function getOption(lang)
+         {
+         	language=lang;
+         	document.getElementById("textlang").innerHTML="";
+         	xmlhttp.onreadystatechange=function()
+         	{
+         		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+         		{
+         			document.getElementById("word").innerHTML=xmlhttp.responseText;
+         		}
+         	}
+         	xmlhttp.open("GET","Exp7/getWords.php?lang="+lang,true);
+         	xmlhttp.send();
+         }
+         
+         function builtDictionary(word)
+         {
+         	document.getElementById("textword").innerHTML="";
+         	words=word;
+         	id=id+1;
+         	$.ajax({
+         		url: "Exp7/generate_dict.php",	
+         		type: "POST",		
+         		data: "lang="+language+"&word="+word+"&id="+id+"&map="+mapping,	
+         		success: function (html) {	
+         			$('#dict').html(html);	
+         		}		
+         	});
+         
+         	document.getElementById("lang").disabled=true;
+         }
+         
+         function check(word)
+         {
+         	//check
+         	document.getElementById("dropword").disabled=true;
+         	var pos=document.getElementById("pos_"+id).value;
+         	var elt=document.getElementById("mean_"+id);
+         	var mean="";
+         	if (elt.selectedIndex != -1){
+         		mean=elt.options[elt.selectedIndex].text;
+         	}
+         	$.ajax({
+         		url: "Exp7/check.php",	
+         		type: "POST",		
+         		data: "lang="+language+"&word="+word+"&map="+mapping+"&pos="+pos+"&mean="+mean,	
+         		success: function (html) {	
+         			if(html>=0){
+         				mapping[id-1]=html;
+         				builtDictionary(word);
+         			}
+         			else if(html==-1){
+         				alert("POS and Meaning do not match");
+         			}
+         			else if(html==-2){
+         				alert("Dictionary Entry repeated");
+         			}
+         		}		
+         	});
+         }
+         function loadAssign()
+         {
+         	xmlhttp.onreadystatechange=function()
+         	{
+         		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+         		{
+         			document.getElementById("assign").innerHTML=xmlhttp.responseText;
+         		}
+         	}
+         	xmlhttp.open("GET","Exp7/loadAssign.php?lang="+language+"&word="+words,true);
+         	xmlhttp.send();
+         }
+         function eval(i){
+         
+         	var ans=document.getElementById("text_"+i).value;
+         	var myans=mapping[ans-1];
+         	xmlhttp.onreadystatechange=function()
+         	{
+         		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+         		{
+         			if(xmlhttp.responseText==1){
+         				document.getElementById("ans_"+i).innerHTML='<img src="images/right.png" style="height:25px;width:25px">';
+         			}
+         			else{
+         				document.getElementById("ans_"+i).innerHTML='<img src="images/wrong.png" style="height:25px;width:25px">';
+         			}
+         		}
+         	}
+         	xmlhttp.open("GET","Exp7/eval.php?lang="+language+"&word="+words+"&ans="+myans+"&i="+i,true);
+         	xmlhttp.send();
+         }
+      </script>
+      
+   </head>
+   <body >
+      <p align="center"><span style="color:blue;font-weight:bold;font-size:14px" id="textlang"> Select Dictionary Language: &nbsp</span>
+<select name="lang" id="lang" autocomplete="off" onchange="getOption(this.value);">
+<option value="null">---Select Language---</option>
+<option value="english">English</option>
+<option value="hindi">Hindi</option>
+</select>
+<br><br>
+</p>
+<div id="word" align="center"></div>
+<div id="dict" align="center"></div>
+<div id="assign" align="center">
 </div>
-	<!-- Add JS at the bottom of HTML file --> 
-        <script src="./js/main.js"></script>
-<script src="../js/jquery.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../js/bootstrap.min.js"></script>
 
-	<!-- Custom Theme JavaScript -->
-    <script src="../js/custom.js"></script>
-    
-    <!-- Include js plugin -->
-	<script src="../vendors/owl-carousel/owl.carousel.js"></script>
-</body>
+
+
+
+
+      <!-- =================================================================================================================================== -->
+      <script src="js/jquery.js"></script>
+      <!-- Bootstrap Core JavaScript -->
+      <script src="js/bootstrap.min.js"></script>
+      <!-- Custom Theme JavaScript -->
+      <script src="js/custom.js"></script>
+      <!-- Include js plugin -->
+      <script src="vendors/owl-carousel/owl.carousel.js"></script>
+       
+   </body>
+   <!-- jQuery -->
 </html>
+
+
