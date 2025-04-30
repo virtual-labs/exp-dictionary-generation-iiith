@@ -28,13 +28,26 @@
         h3 {
             margin-bottom: 10px;
         }
+        .mandatory {
+            color: red; /* Highlight mandatory fields with red asterisk */
+        }
+        .note {
+            font-size: 0.9em;
+            color: gray;
+        }
     </style>
 </head>
 <body>
     <div class="simulation">
+
+        <!-- Note about mandatory fields -->
+        <div class="section note">
+            <p>Fields marked with <span class="mandatory">*</span> are mandatory.</p>
+        </div>
+        
         <!-- Language Selection -->
         <div class="section">
-            <label for="language">Select Language*:</label>
+            <label for="language">Select Language<span class="mandatory">*</span>:</label>
             <select id="language" onchange="loadWords()">
                 <option value="">--Select Language--</option>
                 <option value="english">English</option>
@@ -44,7 +57,7 @@
 
         <!-- Word Selection -->
         <div class="section">
-            <label for="word">Select Word*:</label>
+            <label for="word">Select Word<span class="mandatory">*</span>:</label>
             <select id="word" onchange="loadWordDetails()">
                 <option value="">--Select Word--</option>
             </select>
@@ -52,11 +65,13 @@
 
         <!-- POS Selection -->
         <div class="section">
-            <label for="pos-options">Select POS:</label>
+            <label for="pos-options">Select POS (Optional):</label>
             <select id="pos-options">
                 <option value="">--Select POS--</option>
             </select>
         </div>
+
+        
 
         <!-- Dictionary Details -->
         <div class="section">
