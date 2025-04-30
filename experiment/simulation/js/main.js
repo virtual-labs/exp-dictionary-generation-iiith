@@ -147,9 +147,14 @@ function loadMockData() {
 function loadWords() {
     const language = document.getElementById("language").value; // Get selected language
     const wordDropdown = document.getElementById("word"); // Get word dropdown element
+    const assignmentDiv = document.getElementById("assignment-section"); // Get assignment section div
+    const dictionaryDetailsDiv = document.getElementById("dictionary-details"); // Get dictionary details div
 
-    // Clear existing options
+    // Clear existing options and reset related sections
     wordDropdown.innerHTML = '<option value="">--Select Word--</option>';
+    assignmentDiv.innerHTML = ""; // Clear assignments
+    dictionaryDetailsDiv.innerHTML = ""; // Clear dictionary details
+    document.getElementById("start-assignment").disabled = true; // Disable the Start Assignment button
 
     // Check if the selected language exists in exp7Corpus
     if (language && exp7Corpus[language]) {
@@ -164,16 +169,17 @@ function loadWords() {
 
 // Load details for the selected word
 function loadWordDetails() {
+    const language = document.getElementById("language").value; // Get selected language
     const word = document.getElementById("word").value; // Get selected word
     const detailsDiv = document.getElementById("dictionary-details"); // Get dictionary details div
+    const assignmentDiv = document.getElementById("assignment-section"); // Get assignment section div
 
     // Clear existing content
     detailsDiv.innerHTML = "";
-    currentMeanings = []; // Reset current meanings
+    assignmentDiv.innerHTML = ""; // Clear assignments
+    document.getElementById("start-assignment").disabled = true; // Disable the Start Assignment button
 
-    const language = document.getElementById("language").value; // Get selected language
-
-    if (word && language && exp7Corpus[language] && exp7Corpus[language][word]) {
+    if (language && word && exp7Corpus[language][word]) {
         const wordData = exp7Corpus[language][word];
         const posOptions = [...new Set(wordData.Words.map((item) => item.POS))];
         currentMeanings = wordData.Words;
