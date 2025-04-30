@@ -8,6 +8,13 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: #f4f4f9; /* Optional: Light background color for better aesthetics */
+        }
+        .simulation {
+            width: 100%;
+            max-width: 500px; /* Optional: Limit the width of the simulation */
+            margin: 0 auto; /* Center horizontally */
+            padding: 20px;
         }
         .section {
             margin-bottom: 20px;
@@ -18,50 +25,54 @@
         button {
             margin-top: 10px;
         }
+        h3 {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
+    <div class="simulation">
+        <!-- Language Selection -->
+        <div class="section">
+            <label for="language">Select Language*:</label>
+            <select id="language" onchange="loadWords()">
+                <option value="">--Select Language--</option>
+                <option value="english">English</option>
+                <option value="hindi">Hindi</option>
+            </select>
+        </div>
 
-    <!-- Language Selection -->
-    <div class="section">
-        <label for="language">Select Language*:</label>
-        <select id="language" onchange="loadWords()">
-            <option value="">--Select Language--</option>
-            <option value="english">English</option>
-            <option value="hindi">Hindi</option> <!-- Added Hindi language option -->
-        </select>
-    </div>
+        <!-- Word Selection -->
+        <div class="section">
+            <label for="word">Select Word*:</label>
+            <select id="word" onchange="loadWordDetails()">
+                <option value="">--Select Word--</option>
+            </select>
+        </div>
 
-    <!-- Word Selection -->
-    <div class="section">
-        <label for="word">Select Word*:</label>
-        <select id="word" onchange="loadWordDetails()">
-            <option value="">--Select Word--</option>
-        </select>
-    </div>
+        <!-- POS Selection -->
+        <div class="section">
+            <label for="pos-options">Select POS:</label>
+            <select id="pos-options">
+                <option value="">--Select POS--</option>
+            </select>
+        </div>
 
-    <!-- POS Selection -->
-    <div class="section">
-        <label for="pos-options">Select POS:</label>
-        <select id="pos-options">
-            <option value="">--Select POS--</option>
-        </select>
-    </div>
+        <!-- Dictionary Details -->
+        <div class="section">
+            <h3>Dictionary Details</h3>
+            <div id="dictionary-details"></div>
+        </div>
 
-    <!-- Dictionary Details -->
-    <div class="section">
-        <h3>Dictionary Details</h3>
-        <div id="dictionary-details"></div>
-    </div>
+        <!-- Assignment Section -->
+        <div class="section">
+            <button id="start-assignment" onclick="startAssignment()" disabled>Start Assignment</button>
+        </div>
 
-    <!-- Assignment Section -->
-    <div class="section">
-        <button id="start-assignment" onclick="startAssignment()" disabled>Start Assignment</button>
-    </div>
-
-    <div class="section">
-        <h3>Assignment</h3>
-        <div id="assignment-section"></div>
+        <div class="section">
+            <h3>Assignment</h3>
+            <div id="assignment-section"></div>
+        </div>
     </div>
 
     <!-- Include the main.js script -->
