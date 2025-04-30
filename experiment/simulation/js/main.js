@@ -272,12 +272,34 @@ function displayAssignments(assignments) {
         const questionText = document.createElement("p");
         questionText.textContent = `${index + 1}. ${Sentence}`;
 
+        // Create input field for answers
         const inputField = document.createElement("input");
-        inputField.type = "number";
-        inputField.dataset.index = index;
+        inputField.type = "number"; // Restrict input to numbers only
+        inputField.min = "1"; // Optional: Set minimum value
+        inputField.step = "1"; // Optional: Allow only whole numbers
+        inputField.placeholder = "Enter Sense ID"; // Display placeholder text
+        inputField.dataset.index = index; // Store the question index for evaluation
+
+        // Create a span for error messages
+        const errorMessage = document.createElement("span");
+        errorMessage.style.color = "red"; // Set error message color
+        errorMessage.style.display = "none"; // Hide error message initially
+        errorMessage.textContent = "Wrong Input";
+
+        // Add input validation
+        inputField.addEventListener("input", () => {
+            if (isNaN(inputField.value) || inputField.value.trim() === "") {
+                inputField.style.borderColor = "red"; // Highlight input field in red
+                errorMessage.style.display = "block"; // Show error message
+            } else {
+                inputField.style.borderColor = ""; // Reset input field border
+                errorMessage.style.display = "none"; // Hide error message
+            }
+        });
 
         questionDiv.appendChild(questionText);
         questionDiv.appendChild(inputField);
+        questionDiv.appendChild(errorMessage);
         assignmentDiv.appendChild(questionDiv);
     });
 
