@@ -1,18 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-   <!-- Add CSS at the head of HTML file -->
-    <link rel="stylesheet" href="./css/main.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictionary Simulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .assignment-question {
+            margin-bottom: 10px;
+        }
+        button {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-      <!-- Your code goes here-->
+    <h1>Dictionary Simulation</h1>
 
-   <p><li>Click <a href="./dictionary/index.html" target="_new">here</a> to perform the experiment</li></p>
+    <!-- Language Selection -->
+    <div class="section">
+        <label for="language">Select Language*:</label>
+        <select id="language" onchange="loadWords()">
+            <option value="">--Select Language--</option>
+            <option value="english">English</option>
+            <option value="hindi">Hindi</option> <!-- Added Hindi language option -->
+        </select>
+    </div>
 
-<body>
-   
+    <!-- Word Selection -->
+    <div class="section">
+        <label for="word">Select Word*:</label>
+        <select id="word" onchange="loadWordDetails()">
+            <option value="">--Select Word--</option>
+        </select>
+    </div>
 
-   <!-- Add JS at the bottom of HTML file --> 
-        <script src="./js/main.js"></script>
+    <!-- POS Selection -->
+    <div class="section">
+        <label for="pos-options">Select POS:</label>
+        <select id="pos-options">
+            <option value="">--Select POS--</option>
+        </select>
+    </div>
+
+    <!-- Dictionary Details -->
+    <div class="section">
+        <h3>Dictionary Details</h3>
+        <div id="dictionary-details"></div>
+    </div>
+
+    <!-- Assignment Section -->
+    <div class="section">
+        <button id="start-assignment" onclick="startAssignment()" disabled>Start Assignment</button>
+    </div>
+
+    <div class="section">
+        <h3>Assignment</h3>
+        <div id="assignment-section"></div>
+    </div>
+
+    <!-- Include the main.js script -->
+    <script src="./js/main.js"></script>
 </body>
 </html>
